@@ -33,23 +33,21 @@ function drawMatrix(matrix, video) {
   var sy;
   var dx;
   var dy;
-  var row;
   var column;
 
-  for (var i = 0; i < matrix.length; i++) {
-    row = matrix[i];
+  for (var i = 0; i < matrix.getRows(); i++) {
     dy = i * pieceSize;
 
-    for (var j = 0; j < row.length; j++) {
+    for (var j = 0; j < matrix.getColumns(); j++) {
       dx = j * pieceSize;
 
-      if (row[j] === null) {
+      if (matrix.get(i, j) === null) {
         ctx.fillRect(dx, dy, pieceSize, pieceSize);
         continue;
       }
 
-      sx = row[j].column * pieceSize;
-      sy = row[j].row * pieceSize;
+      sx = matrix.get(i, j).column * pieceSize;
+      sy = matrix.get(i, j).row * pieceSize;
 
       ctx.drawImage(video, sx, sy, pieceSize, pieceSize, dx, dy, pieceSize, pieceSize);
       ctx.strokeStyle = '#FFFF00';
@@ -99,7 +97,7 @@ function handleMouseDown(evt) {
   currentPiece = {
     x: x,
     y: y,
-    value: matrix[row][column],
+    value: matrix.get(row, column),
     position: {
       row: row,
       column: column
@@ -110,7 +108,7 @@ function handleMouseDown(evt) {
     }
   };
 
-  matrix[row][column] = null;
+  matrix.set(row, column, null);
 }
 
 function handleMouseMove(evt) {
@@ -131,15 +129,15 @@ function handleMouseUp(evt, mouseMoveHandler) {
 
   // If the piece is set in the same spot
   if (position.row === currentPiece.position.row && position.column === currentPiece.position.column) {
-    matrix[position.row][position.column] = currentPiece.value;
+    matrix.set(position.row, position.column, currentPiece.value);
     currentPiece = null;
     return;
   }
   
   // Swap pieces
-  var pieceToSwap = matrix[position.row][position.column];
-  matrix[position.row][position.column] = currentPiece.value;
-  matrix[currentPiece.position.row][currentPiece.position.column] = pieceToSwap;
+  var pieceToSwap = matrix.get(position.row, position.column);
+  matrix.set(position.row, position.column, currentPiece.value);
+  matrix.set(currentPiece.position.row, currentPiece.position.column, pieceToSwap);
   currentPiece = null;
 }
 
