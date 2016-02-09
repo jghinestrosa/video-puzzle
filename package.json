@@ -1,0 +1,19 @@
+{
+  "name": "video-puzzle",
+  "version": "0.1.0",
+  "description": "A puzzle game using the webcam",
+  "main": "script.js",
+  "scripts": {
+    "serve": "http-server ."
+  },
+  "keywords": [
+    "video",
+    "puzzle",
+    "canvas"
+  ],
+  "author": "Jorge García Hinestrosa",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^0.8.5"
+  }
+}

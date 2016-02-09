@@ -1,0 +1,8 @@
+video, canvas {
+  outline: 1px solid black;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
