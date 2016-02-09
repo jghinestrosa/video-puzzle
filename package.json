@@ -4,7 +4,12 @@
   "description": "A puzzle game using the webcam",
   "main": "script.js",
   "scripts": {
-    "serve": "http-server ."
+    "jshint": "jshint src",
+    "clean": "rimraf build && mkdirp build && mkdirp build/js && mkdirp build/css",
+    "copy": "cpy 'src/index.html' build && cpy 'src/css/main.css' build/css",
+    "browserify": "browserify -d -o build/js/main.js src/js/main.js",
+    "build": "npm run jshint && npm run clean && npm run copy && npm run browserify",
+    "serve": "http-server build"
   },
   "keywords": [
     "video",
@@ -14,6 +19,11 @@
   "author": "Jorge García Hinestrosa",
   "license": "MIT",
   "devDependencies": {
-    "http-server": "^0.8.5"
+    "browserify": "^13.0.0",
+    "cpy-cli": "^1.0.0",
+    "http-server": "^0.8.5",
+    "jshint": "^2.9.1",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.1"
   }
 }
