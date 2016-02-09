@@ -35,12 +35,19 @@ function createMatrix(rows, columns) {
     return columns;
   }
 
+  function swap(from, to) {
+    var valueFrom = get(from.row, from.column);
+    set(from.row, from.column, get(to.row, to.column));
+    set(to.row, to.column, valueFrom);
+  }
+
   return {
     get: get,
     set: set,
     getRow: getRow,
     getRows: getRows,
-    getColumns: getColumns
+    getColumns: getColumns,
+    swap: swap
   };
 }
 

@@ -135,9 +135,8 @@ function handleMouseUp(evt, mouseMoveHandler) {
   }
   
   // Swap pieces
-  var pieceToSwap = matrix.get(position.row, position.column);
+  matrix.swap(position, currentPiece.position);
   matrix.set(position.row, position.column, currentPiece.value);
-  matrix.set(currentPiece.position.row, currentPiece.position.column, pieceToSwap);
   currentPiece = null;
 }
 
