@@ -41,13 +41,29 @@ function createMatrix(rows, columns) {
     set(to.row, to.column, valueFrom);
   }
 
+  function isSort() {
+    var elem;
+    
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < columns; j++) {
+        elem = matrix[i][j];
+        if (i !== elem.row || j !== elem.column) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   return {
     get: get,
     set: set,
     getRow: getRow,
     getRows: getRows,
     getColumns: getColumns,
-    swap: swap
+    swap: swap,
+    isSort: isSort
   };
 }
 
