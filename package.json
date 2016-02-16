@@ -9,6 +9,7 @@
     "copy": "cpy 'src/index.html' build && cpy 'src/css/main.css' build/css",
     "browserify": "browserify -d -o build/js/main.js src/js/main.js",
     "build": "npm run jshint && npm run clean && npm run copy && npm run browserify",
+    "watch": "watch 'npm run build' src",
     "serve": "http-server build"
   },
   "keywords": [
@@ -24,6 +25,7 @@
     "http-server": "^0.8.5",
     "jshint": "^2.9.1",
     "mkdirp": "^0.5.1",
-    "rimraf": "^2.5.1"
+    "rimraf": "^2.5.1",
+    "watch": "^0.17.1"
   }
 }
