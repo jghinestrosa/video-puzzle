@@ -4,7 +4,6 @@ var matrix = require('./matrix.js');
 var canvas = require('./canvas.js');
 
 var $ = document.querySelector.bind(document);
-
 // Video config
 var video = $('video');
 
@@ -36,7 +35,10 @@ function onVideoLoaded() {
     height: minSize,
     pieceSize: pieceSize
   });
+
+  $('button').addEventListener('click', board.shuffle);
 }
+
 
 video.addEventListener('loadeddata', onVideoLoaded);
 

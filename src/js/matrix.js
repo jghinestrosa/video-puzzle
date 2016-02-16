@@ -41,6 +41,26 @@ function createMatrix(rows, columns) {
     set(to.row, to.column, valueFrom);
   }
 
+  function shuffle(list) {
+    var elem;
+    var index;
+
+    for (var i = list.length - 1; i >= 1; i--) {
+      index = Math.floor(Math.random() * i);
+      elem = list[index];
+      list[index] = list[i];
+      list[i] = elem;
+    }
+  }
+
+  function shuffleMatrix() {
+    for (var i = 0; i < matrix.length; i++) {
+      shuffle(matrix[i]);
+    }
+
+    shuffle(matrix);
+  }
+
   function isSort() {
     var elem;
     
@@ -63,7 +83,8 @@ function createMatrix(rows, columns) {
     getRows: getRows,
     getColumns: getColumns,
     swap: swap,
-    isSort: isSort
+    isSort: isSort,
+    shuffle: shuffleMatrix
   };
 }
 
