@@ -8,7 +8,7 @@ function createMatrix(rows, columns) {
     for (var j = 0; j < columns; j++) {
       row.push({
         row: i,
-        column: j,
+        column: j
       });
     }
 
@@ -51,25 +51,51 @@ function createMatrix(rows, columns) {
       list[index] = list[i];
       list[i] = elem;
     }
+
+    return list;
+  }
+
+  function concat() {
+    return matrix.reduce(function(prev, next) {
+      return prev.concat(next);
+    });
+  }
+
+  function split(list) {
+    var splitted = [];
+    for (var i = 0; i < rows; i++) {
+      splitted.push(list.splice(0, columns));
+    }
+    
+    return splitted;
   }
 
   function shuffleMatrix() {
 
-    // Reduce matrix to an array
-    var reduced = matrix.reduce(function(prev, next) {
-      return prev.concat(next);
-    });
+    // Reduce the matrix to an array with concatenated rows,
+    // shuffle the array, and split it in multiple rows again
+    matrix = split(shuffle(concat()));
+  }
 
-    // Shuffle the array
-    shuffle(reduced);
-
-    // Split array in multiple rows
-    var shuffledMatrix = [];
-    for (var i = 0; i < rows; i++) {
-      shuffledMatrix.push(reduced.splice(0, columns));
+  function sort(list) {
+    for (var i = 0; i < list.length; i++) {
+      for (var j = 0; j < list.length - 1 - i; j++) {
+        if (list[j].row > list[j+1].row || (list[j].row === list[j+1].row && list[j].column > list[j+1].column)) {
+          var elem = list[j];
+          list[j] = list[j + 1];
+          list[j + 1] = elem;
+        }
+      }
     }
 
-    matrix = shuffledMatrix;
+    return list;
+  }
+
+  function sortMatrix() {
+
+    // Reduce the matrix to an array with concatenated rows,
+    // sort the array, and split it in multiple rows again
+    matrix = split(sort(concat()));
   }
 
   function isSort() {
@@ -95,7 +121,8 @@ function createMatrix(rows, columns) {
     getColumns: getColumns,
     swap: swap,
     isSort: isSort,
-    shuffle: shuffleMatrix
+    shuffle: shuffleMatrix,
+    sort: sortMatrix
   };
 }
 

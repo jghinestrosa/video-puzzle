@@ -36,7 +36,8 @@ function onVideoLoaded() {
     pieceSize: pieceSize
   });
 
-  $('button').addEventListener('click', board.shuffle);
+  $('#shuffle').addEventListener('click', board.shuffle);
+  $('#sort').addEventListener('click', board.sort);
 }
 
 
