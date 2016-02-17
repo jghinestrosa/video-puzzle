@@ -54,11 +54,22 @@ function createMatrix(rows, columns) {
   }
 
   function shuffleMatrix() {
-    for (var i = 0; i < matrix.length; i++) {
-      shuffle(matrix[i]);
+
+    // Reduce matrix to an array
+    var reduced = matrix.reduce(function(prev, next) {
+      return prev.concat(next);
+    });
+
+    // Shuffle the array
+    shuffle(reduced);
+
+    // Split array in multiple rows
+    var shuffledMatrix = [];
+    for (var i = 0; i < rows; i++) {
+      shuffledMatrix.push(reduced.splice(0, columns));
     }
 
-    shuffle(matrix);
+    matrix = shuffledMatrix;
   }
 
   function isSort() {
