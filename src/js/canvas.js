@@ -138,6 +138,9 @@ function handleMouseUp(evt, mouseMoveHandler) {
   matrix.swap(position, currentPiece.position);
   matrix.set(position.row, position.column, currentPiece.value);
   currentPiece = null;
+
+  // Check if the matrix is sort
+  matrix.isSort();
 }
 
 /* Start listening mouse events*/

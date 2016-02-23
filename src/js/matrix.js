@@ -110,7 +110,30 @@ function createMatrix(rows, columns) {
       }
     }
 
+    trigger('sort');
     return true;
+  }
+
+  // Events
+
+  var listeners = {};
+
+  function on(event, callback) {
+    if (!listeners[event]) {
+      listeners[event] = [];
+    }
+
+    listeners[event].push(callback);
+  }
+
+  function trigger(event) {
+    var handlers = listeners[event];
+
+    if (handlers) {
+      handlers.forEach(function(callback) {
+        callback();
+      });
+    }
   }
 
   return {
@@ -122,7 +145,8 @@ function createMatrix(rows, columns) {
     swap: swap,
     isSort: isSort,
     shuffle: shuffleMatrix,
-    sort: sortMatrix
+    sort: sortMatrix,
+    on: on
   };
 }
 

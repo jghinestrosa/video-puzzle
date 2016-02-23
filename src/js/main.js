@@ -38,6 +38,10 @@ function onVideoLoaded() {
 
   $('#shuffle').addEventListener('click', board.shuffle);
   $('#sort').addEventListener('click', board.sort);
+
+  board.on('sort', function() {
+    console.log('win!');
+  });
 }
 
 
