@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" href="css/main.css">
     <title>Video Puzzle</title>
   </head>
@@ -9,11 +10,13 @@
     <header>
       <h1>Video Puzzle</h1>
     </header>
-    <video autoplay></video>
-    <canvas id="canvas"></canvas>
-    <section class="buttons">
-      <button id="shuffle">Start</button>
-      <button id="sort">Surrender</button>
+    <section id="container">
+      <video autoplay></video>
+      <canvas id="canvas"></canvas>
+      <section class="buttons">
+        <button id="shuffle">Start</button>
+        <button id="sort">Surrender</button>
+      </section>
     </section>
     <script type="text/javascript" src="js/main.js"></script>
   </body>
