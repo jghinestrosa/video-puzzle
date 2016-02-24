@@ -89,7 +89,7 @@ function getPositionFromCoordinates(x, y) {
 
 /* Event listeners */
 
-function selectPiece(x, y) {
+function selectCurrentPiece(x, y) {
   var position = getPositionFromCoordinates(x, y);
 
   var column = position.column;
@@ -115,12 +115,12 @@ function selectPiece(x, y) {
   matrix.set(row, column, null);
 }
 
-function movePiece(x, y) {
+function moveCurrentPiece(x, y) {
   currentPiece.x = x;
   currentPiece.y = y;
 }
 
-function putPiece(x, y) {
+function putCurrentPiece(x, y) {
   var position = getPositionFromCoordinates(x, y);
 
   // If the piece is set in the same spot
@@ -145,45 +145,45 @@ function calculateStyleSizeForPiece() {
   pieceStyleSize = canvasStyleWidth / matrix.getRows();
 }
 
-/* Start listening mouse events*/
-canvas.addEventListener('mousedown', function(e) {
-  var x = e.pageX - canvas.offsetLeft;
-  var y = e.pageY - canvas.offsetTop;
+/* Handlers for touch and mouse events */
+
+function handleDown(e) {
+  var x = (e.pageX || e.touches[0].pageX) - canvas.offsetLeft;
+  var y = (e.pageY || e.touches[0].pageY) - canvas.offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
-  selectPiece(x, y);
-});
+  selectCurrentPiece(x, y);
+}
 
-canvas.addEventListener('mousemove', function(e) {
+function handleMove(e) {
   if (!currentPiece) {
     return;
   }
 
-  var x = e.pageX - canvas.offsetLeft;
-  var y = e.pageY - canvas.offsetTop;
+  var x = (e.pageX || e.touches[0].pageX) - canvas.offsetLeft;
+  var y = (e.pageY || e.touches[0].pageY) - canvas.offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
-  movePiece(x, y);
-});
+  moveCurrentPiece(x, y);
+}
 
-canvas.addEventListener('mouseup', function(e) {
-  var x = e.pageX - canvas.offsetLeft;
-  var y = e.pageY - canvas.offsetTop;
+function handleUp(e) {
+  var x = (e.pageX || lastTouch.pageX) - canvas.offsetLeft;
+  var y = (e.pageY || lastTouch.pageY) - canvas.offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
-  putPiece(x, y);
-});
+  putCurrentPiece(x, y);
+}
+
+/* Start listening mouse events*/
+canvas.addEventListener('mousedown', handleDown);
+canvas.addEventListener('mousemove', handleMove);
+canvas.addEventListener('mouseup', handleUp);
 
 canvas.addEventListener('touchstart', function(e) {
   e.preventDefault();
   e.stopPropagation();
-
-  var x = e.touches[0].pageX - canvas.offsetLeft;
-  var y = e.touches[0].pageY - canvas.offsetTop;
-
-  x = x * canvas.width / canvasStyleWidth;
-  y = y * canvas.height / canvasStyleHeight;
-  selectPiece(x, y);
+  handleDown(e);
 });
 
 canvas.addEventListener('touchmove', function(e) {
@@ -193,12 +193,7 @@ canvas.addEventListener('touchmove', function(e) {
 
   e.preventDefault();
   e.stopPropagation();
-
-  var x = e.touches[0].pageX - canvas.offsetLeft;
-  var y = e.touches[0].pageY - canvas.offsetTop;
-  x = x * canvas.width / canvasStyleWidth;
-  y = y * canvas.height / canvasStyleHeight;
-  movePiece(x, y);
+  handleMove(e);
 
   lastTouch = e.touches[0];
 });
@@ -206,12 +201,7 @@ canvas.addEventListener('touchmove', function(e) {
 canvas.addEventListener('touchend', function(e) {
   e.preventDefault();
   e.stopPropagation();
-
-  var x = lastTouch.pageX - canvas.offsetLeft;
-  var y = lastTouch.pageY - canvas.offsetTop;
-  x = x * canvas.width / canvasStyleWidth;
-  y = y * canvas.height / canvasStyleHeight;
-  putPiece(x, y);
+  handleUp(e);
 });
 
 window.addEventListener('resize', calculateStyleSizeForPiece); 
