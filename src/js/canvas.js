@@ -10,11 +10,18 @@ var matrix;
 var currentPiece;
 var pieceSize;
 
+// Size from style rules
+var canvasStyleWidth;
+var pieceStyleSize;
+
+var lastTouch;
+
 function init(params) {
   matrix = params.matrix;
   video = params.video;
   setCanvasSize(params.width, params.height);
   pieceSize = params.pieceSize;
+  calculateStyleSizeForPiece();
 
   startPainting();
 }
@@ -48,7 +55,6 @@ function drawMatrix(matrix, video) {
 
       sx = matrix.get(i, j).column * pieceSize;
       sy = matrix.get(i, j).row * pieceSize;
-
       ctx.drawImage(video, sx, sy, pieceSize, pieceSize, dx, dy, pieceSize, pieceSize);
       ctx.strokeStyle = '#FFFF00';
       ctx.strokeRect(dx, dy, pieceSize, pieceSize);
@@ -74,17 +80,19 @@ function startPainting() {
 }
 
 function getPositionFromCoordinates(x, y) {
+  //return {
+    //column: Math.floor(x / pieceSize),
+    //row: Math.floor(y / pieceSize)
+  //};
   return {
-    column: Math.floor(x / pieceSize),
-    row: Math.floor(y / pieceSize)
+    column: Math.floor(x / pieceStyleSize),
+    row: Math.floor(y / pieceStyleSize)
   };
 }
 
 /* Event listeners */
 
-function handleMouseDown(evt) {
-  var x = evt.pageX - canvas.offsetLeft;
-  var y = evt.pageY - canvas.offsetTop;
+function selectPiece(x, y) {
 
   var position = getPositionFromCoordinates(x, y);
 
@@ -111,20 +119,12 @@ function handleMouseDown(evt) {
   matrix.set(row, column, null);
 }
 
-function handleMouseMove(evt) {
-  var x = evt.pageX - canvas.offsetLeft;
-  var y = evt.pageY - canvas.offsetTop;
-
+function movePiece(x, y) {
   currentPiece.x = x;
   currentPiece.y = y;
 }
 
-function handleMouseUp(evt, mouseMoveHandler) {
-  canvas.removeEventListener('mousemove', mouseMoveHandler);
-
-  var x = evt.pageX - canvas.offsetLeft;
-  var y = evt.pageY - canvas.offsetTop;
-
+function putPiece(x, y) {
   var position = getPositionFromCoordinates(x, y);
 
   // If the piece is set in the same spot
@@ -143,19 +143,72 @@ function handleMouseUp(evt, mouseMoveHandler) {
   matrix.isSort();
 }
 
+function calculateStyleSizeForPiece() {
+  canvasStyleWidth = parseInt(window.getComputedStyle($('canvas')).width, 10);
+  pieceStyleSize = canvasStyleWidth / matrix.getRows();
+}
+
 /* Start listening mouse events*/
-
-canvas.addEventListener('mousedown', function(evt) {
-  handleMouseDown(evt);
-  canvas.addEventListener('mousemove', handleMouseMove);
+canvas.addEventListener('mousedown', function(e) {
+  var x = e.pageX - canvas.offsetLeft;
+  var y = e.pageY - canvas.offsetTop;
+  selectPiece(x, y);
 });
 
-canvas.addEventListener('mouseup', function(evt) {
-  handleMouseUp(evt, handleMouseMove);
+canvas.addEventListener('mousemove', function(e) {
+  if (!currentPiece) {
+    return;
+  }
+
+  var x = e.pageX - canvas.offsetLeft;
+  var y = e.pageY - canvas.offsetTop;
+  movePiece(x, y);
 });
+
+canvas.addEventListener('mouseup', function(e) {
+  var x = e.pageX - canvas.offsetLeft;
+  var y = e.pageY - canvas.offsetTop;
+  putPiece(x, y);
+});
+
+canvas.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  var x = e.touches[0].pageX - canvas.offsetLeft;
+  var y = e.touches[0].pageY - canvas.offsetTop;
+  selectPiece(x, y);
+});
+
+canvas.addEventListener('touchmove', function(e) {
+  if (!currentPiece) {
+    return;
+  }
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  var x = e.touches[0].pageX - canvas.offsetLeft;
+  var y = e.touches[0].pageY - canvas.offsetTop;
+  movePiece(x, y);
+
+  lastTouch = e.touches[0];
+});
+
+canvas.addEventListener('touchend', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  var x = lastTouch.pageX - canvas.offsetLeft;
+  var y = lastTouch.pageY - canvas.offsetTop;
+  putPiece(x, y);
+});
+
+window.addEventListener('resize', calculateStyleSizeForPiece); 
 
 module.exports = {
   init: init,
-  startPainting: startPainting
+  startPainting: startPainting,
+  setPieceSize: setPieceSize
 };
 

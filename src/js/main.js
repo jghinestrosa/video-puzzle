@@ -20,12 +20,12 @@ function handleError(err) {
 }
 
 function onVideoLoaded() {
-  console.log(video.width, video.height);
 
   // Make a squared canvas
   var minSize = Math.min(video.videoWidth, video.videoHeight);
 
   var pieceSize = minSize / piecesPerRow;
+  
   var board = matrix.create(numberOfRows, piecesPerRow);
 
   canvas.init({
