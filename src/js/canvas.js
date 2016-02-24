@@ -21,6 +21,8 @@ var offsetTop;
 
 var lastTouch;
 
+var interactive = false;
+
 function init(params) {
   matrix = params.matrix;
   video = params.video;
@@ -39,6 +41,10 @@ function setCanvasSize(width, height) {
 
 function setPieceSize(size) {
   pieceSize = size;
+}
+
+function setInteractive(value) {
+  interactive = value;
 }
 
 function drawMatrix(matrix, video) {
@@ -182,6 +188,10 @@ function trigger(event) {
 /* Handlers for touch and mouse events */
 
 function handleDown(e) {
+  if (!interactive) {
+    return;
+  }
+
   var x = (e.pageX || e.touches[0].pageX) - offsetLeft;
   var y = (e.pageY || e.touches[0].pageY) - offsetTop;
   x = x * canvas.width / canvasStyleWidth;
@@ -202,6 +212,10 @@ function handleMove(e) {
 }
 
 function handleUp(e) {
+  if (!interactive) {
+    return;
+  }
+
   var x = (e.pageX || lastTouch.pageX) - offsetLeft;
   var y = (e.pageY || lastTouch.pageY) - offsetTop;
   x = x * canvas.width / canvasStyleWidth;
@@ -215,6 +229,10 @@ canvas.addEventListener('mousemove', handleMove);
 canvas.addEventListener('mouseup', handleUp);
 
 canvas.addEventListener('touchstart', function(e) {
+  if (!interactive) {
+    return;
+  }
+
   e.preventDefault();
   e.stopPropagation();
   handleDown(e);
@@ -233,6 +251,10 @@ canvas.addEventListener('touchmove', function(e) {
 });
 
 canvas.addEventListener('touchend', function(e) {
+  if (!interactive) {
+    return;
+  }
+
   e.preventDefault();
   e.stopPropagation();
   handleUp(e);
@@ -247,6 +269,7 @@ module.exports = {
   init: init,
   startPainting: startPainting,
   setPieceSize: setPieceSize,
-  on: on
+  on: on,
+  setInteractive: setInteractive
 };
 

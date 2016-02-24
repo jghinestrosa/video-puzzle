@@ -107,6 +107,10 @@ button {
   transition-duration: 0.2s;
 }
 
+button.disabled {
+  background: #9FB5AE;
+}
+
 .buttons button:active {
   background: #0B503B;
 }

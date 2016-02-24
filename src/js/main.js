@@ -16,12 +16,43 @@ var endingResult = $('#ending #result');
 var piecesPerRow = 5;
 var numberOfRows = piecesPerRow;
 
+var board;
+var started = false;
+
 function handleStream(stream) {
   video.src = URL.createObjectURL(stream);
 }
 
 function handleError(err) {
   throw new Error(err);
+}
+
+function newGame() {
+  started = true;
+  board.shuffle();
+  canvas.setInteractive(true);
+  $('#sort').classList.remove('disabled');
+}
+
+function surrender() {
+  if (!started) {
+    return;
+  }
+
+  board.sort();
+  endingResult.textContent = 'lose';
+  canvas.setInteractive(false);
+  endingContainer.classList.add('visible');
+}
+
+function win() {
+  endingResult.textContent = 'win';
+  endingContainer.classList.add('visible');
+}
+
+function restart() {
+  endingContainer.classList.remove('visible');
+  newGame();
 }
 
 function onVideoLoaded() {
@@ -31,7 +62,7 @@ function onVideoLoaded() {
 
   var pieceSize = minSize / piecesPerRow;
   
-  var board = matrix.create(numberOfRows, piecesPerRow);
+  board = matrix.create(numberOfRows, piecesPerRow);
 
   canvas.init({
     matrix: board,
@@ -42,21 +73,11 @@ function onVideoLoaded() {
   });
 
   // Buttons
-  $('#shuffle').addEventListener('click', board.shuffle);
-  $('#sort').addEventListener('click', function() {
-    board.sort();
-    endingResult.textContent = 'lose';
-    endingContainer.classList.add('visible');
-  });
+  $('#shuffle').addEventListener('click', newGame);
+  $('#sort').addEventListener('click', surrender);
+  $('#restart').addEventListener('click', restart);
 
-  $('#restart').addEventListener('click', function() {
-    endingContainer.classList.remove('visible');
-  });
-
-  canvas.on('win', function() {
-    endingResult.textContent = 'win';
-    endingContainer.classList.add('visible');
-  });
+  canvas.on('win', win);
 }
 
 
