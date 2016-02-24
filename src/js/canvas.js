@@ -141,7 +141,9 @@ function putCurrentPiece(x, y) {
   currentPiece = null;
 
   // Check if the matrix is sort
-  matrix.isSort();
+  if (matrix.isSort()) {
+    trigger('win');
+  }
 }
 
 function calculateStyleSizeForPiece() {
@@ -154,6 +156,27 @@ function calculateOffsets() {
   var rect = canvas.getBoundingClientRect();
   offsetLeft = rect.left;
   offsetTop = rect.top;
+}
+
+/* Events */
+var listeners = {};
+
+function on(event, callback) {
+  if (!listeners[event]) {
+    listeners[event] = [];
+  }
+
+  listeners[event].push(callback);
+}
+
+function trigger(event) {
+  var handlers = listeners[event];
+
+  if (handlers) {
+    handlers.forEach(function(callback) {
+      callback();
+    });
+  }
 }
 
 /* Handlers for touch and mouse events */
@@ -223,6 +246,7 @@ window.addEventListener('resize', function() {
 module.exports = {
   init: init,
   startPainting: startPainting,
-  setPieceSize: setPieceSize
+  setPieceSize: setPieceSize,
+  on: on
 };
 

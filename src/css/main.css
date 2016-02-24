@@ -22,10 +22,60 @@ video {
   margin: 0 auto;
 }
 
-canvas {
-  display: block;
+#puzzle-container {
+  position: relative;
   width: 500px;
   height: 500px;
+}
+
+canvas, #ending-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  z-index: 1;
+}
+
+#ending-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  z-index: 2;
+}
+
+#ending-container.visible {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  animation-name: fade;
+  animation-duration: 0.7s;
+  animation-fill-mode: both;
+}
+
+#ending {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 250px;
+  height: 150px;
+  border-radius: 2px;
+}
+
+#ending p {
+  text-align: center;
+  padding: 1em;
+  font-family: 'Helvetica';
 }
 
 .buttons {
@@ -43,7 +93,7 @@ canvas {
   display: inline-block;
 }
 
-.buttons ul li button {
+button {
   display: inline-block;
   border: none;
   background: #118A65;
@@ -61,12 +111,22 @@ canvas {
   background: #0B503B;
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 @media screen and (max-width: 568px) {
   #container {
     width: 280px;
   }
 
-  canvas {
+  #puzzle-container {
     width: 280px;
     height: 280px;
   }

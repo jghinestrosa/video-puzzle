@@ -4,8 +4,13 @@ var matrix = require('./matrix.js');
 var canvas = require('./canvas.js');
 
 var $ = document.querySelector.bind(document);
+
 // Video config
 var video = $('video');
+
+// End message
+var endingContainer = $('#ending-container');
+var endingResult = $('#ending #result');
 
 // Puzzle pieces config
 var piecesPerRow = 5;
@@ -36,11 +41,21 @@ function onVideoLoaded() {
     pieceSize: pieceSize
   });
 
+  // Buttons
   $('#shuffle').addEventListener('click', board.shuffle);
-  $('#sort').addEventListener('click', board.sort);
+  $('#sort').addEventListener('click', function() {
+    board.sort();
+    endingResult.textContent = 'lose';
+    endingContainer.classList.add('visible');
+  });
 
-  board.on('sort', function() {
-    console.log('win!');
+  $('#restart').addEventListener('click', function() {
+    endingContainer.classList.remove('visible');
+  });
+
+  canvas.on('win', function() {
+    endingResult.textContent = 'win';
+    endingContainer.classList.add('visible');
   });
 }
 

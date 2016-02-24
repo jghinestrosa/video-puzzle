@@ -12,7 +12,15 @@
     </header>
     <section id="container">
       <video autoplay></video>
-      <canvas id="canvas"></canvas>
+      <section id="puzzle-container">
+        <canvas id="canvas"></canvas>
+        <section id="ending-container">
+          <section id="ending">
+            <p>You <span id="result"></span>!</p>
+            <button id="restart">Restart</button>
+          </section>
+        </section>
+      </section>
       <section class="buttons">
         <ul>
           <li><button id="shuffle">Start</button></li>
