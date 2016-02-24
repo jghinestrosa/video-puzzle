@@ -15,6 +15,10 @@ var canvasStyleWidth;
 var canvasStyleHeight;
 var pieceStyleSize;
 
+// Canvas offset
+var offsetLeft;
+var offsetTop;
+
 var lastTouch;
 
 function init(params) {
@@ -23,6 +27,7 @@ function init(params) {
   setCanvasSize(params.width, params.height);
   pieceSize = params.pieceSize;
   calculateStyleSizeForPiece();
+  calculateOffsets();
 
   startPainting();
 }
@@ -145,11 +150,17 @@ function calculateStyleSizeForPiece() {
   pieceStyleSize = canvasStyleWidth / matrix.getRows();
 }
 
+function calculateOffsets() {
+  var rect = canvas.getBoundingClientRect();
+  offsetLeft = rect.left;
+  offsetTop = rect.top;
+}
+
 /* Handlers for touch and mouse events */
 
 function handleDown(e) {
-  var x = (e.pageX || e.touches[0].pageX) - canvas.offsetLeft;
-  var y = (e.pageY || e.touches[0].pageY) - canvas.offsetTop;
+  var x = (e.pageX || e.touches[0].pageX) - offsetLeft;
+  var y = (e.pageY || e.touches[0].pageY) - offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
   selectCurrentPiece(x, y);
@@ -160,16 +171,16 @@ function handleMove(e) {
     return;
   }
 
-  var x = (e.pageX || e.touches[0].pageX) - canvas.offsetLeft;
-  var y = (e.pageY || e.touches[0].pageY) - canvas.offsetTop;
+  var x = (e.pageX || e.touches[0].pageX) - offsetLeft;
+  var y = (e.pageY || e.touches[0].pageY) - offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
   moveCurrentPiece(x, y);
 }
 
 function handleUp(e) {
-  var x = (e.pageX || lastTouch.pageX) - canvas.offsetLeft;
-  var y = (e.pageY || lastTouch.pageY) - canvas.offsetTop;
+  var x = (e.pageX || lastTouch.pageX) - offsetLeft;
+  var y = (e.pageY || lastTouch.pageY) - offsetTop;
   x = x * canvas.width / canvasStyleWidth;
   y = y * canvas.height / canvasStyleHeight;
   putCurrentPiece(x, y);
@@ -204,7 +215,10 @@ canvas.addEventListener('touchend', function(e) {
   handleUp(e);
 });
 
-window.addEventListener('resize', calculateStyleSizeForPiece); 
+window.addEventListener('resize', function() {
+  calculateStyleSizeForPiece();
+  calculateOffsets();
+}); 
 
 module.exports = {
   init: init,
