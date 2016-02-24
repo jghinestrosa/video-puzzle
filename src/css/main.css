@@ -1,5 +1,16 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #E2FDFD;
+}
+
 h1 {
   text-align: center;
+  color: #118A65;
+  font-family: 'Helvetica';
 }
 
 video {
@@ -18,10 +29,37 @@ canvas {
 }
 
 .buttons {
-  text-align: center;
-  padding: 2em;
+  margin-top: 2em;
 }
 
+.buttons ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.buttons ul li {
+  display: inline-block;
+}
+
+.buttons ul li button {
+  display: inline-block;
+  border: none;
+  background: #118A65;
+  border-radius: 3px;
+  padding: 1em;
+  color: white;
+  font-size: 1em;
+  width: 8em;
+  cursor: pointer;
+  outline: none;
+  transition-duration: 0.2s;
+}
+
+.buttons button:active {
+  background: #0B503B;
+}
 
 @media screen and (max-width: 568px) {
   #container {
