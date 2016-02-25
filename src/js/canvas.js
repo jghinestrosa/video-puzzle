@@ -237,6 +237,8 @@ canvas.addEventListener('touchstart', function(e) {
   e.preventDefault();
   e.stopPropagation();
   handleDown(e);
+
+  lastTouch = e.touches[0];
 });
 
 canvas.addEventListener('touchmove', function(e) {
