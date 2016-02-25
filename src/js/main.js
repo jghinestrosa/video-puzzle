@@ -8,6 +8,11 @@ var $ = document.querySelector.bind(document);
 // Video config
 var video = $('video');
 
+// Buttons
+var bShuffle = $('#shuffle');
+var bSort = $('#sort');
+var bRestart = $('#restart');
+
 // End message
 var endingContainer = $('#ending-container');
 var endingResult = $('#ending #result');
@@ -72,14 +77,13 @@ function onVideoLoaded() {
     pieceSize: pieceSize
   });
 
-  // Buttons
-  $('#shuffle').addEventListener('click', newGame);
-  $('#sort').addEventListener('click', surrender);
-  $('#restart').addEventListener('click', restart);
+  // Listen clicks on buttons
+  bShuffle.addEventListener('click', newGame);
+  bSort.addEventListener('click', surrender);
+  bRestart.addEventListener('click', restart);
 
   canvas.on('win', win);
 }
-
 
 video.addEventListener('loadeddata', onVideoLoaded);
 

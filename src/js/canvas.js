@@ -98,7 +98,7 @@ function getPositionFromCoordinates(x, y) {
   };
 }
 
-/* Event listeners */
+/* Current piece handlers */
 
 function selectCurrentPiece(x, y) {
   var position = getPositionFromCoordinates(x, y);
@@ -152,6 +152,7 @@ function putCurrentPiece(x, y) {
   }
 }
 
+/* CSS related methods */
 function calculateStyleSizeForPiece() {
   canvasStyleWidth = parseInt(window.getComputedStyle($('canvas')).width, 10);
   canvasStyleHeight = parseInt(window.getComputedStyle($('canvas')).height, 10);
@@ -260,6 +261,7 @@ canvas.addEventListener('touchend', function(e) {
   handleUp(e);
 });
 
+/* Update CSS related properties when the window is resized */
 window.addEventListener('resize', function() {
   calculateStyleSizeForPiece();
   calculateOffsets();
