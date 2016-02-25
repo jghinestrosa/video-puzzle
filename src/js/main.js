@@ -23,6 +23,7 @@ var numberOfRows = piecesPerRow;
 
 var board;
 var started = false;
+var finished = false;
 
 function handleStream(stream) {
   video.src = URL.createObjectURL(stream);
@@ -33,14 +34,19 @@ function handleError(err) {
 }
 
 function newGame() {
-  started = true;
+  if (finished) {
+    return;
+  }
+
   board.shuffle();
   canvas.setInteractive(true);
   $('#sort').classList.remove('disabled');
+  started = true;
+  finished = false;
 }
 
 function surrender() {
-  if (!started) {
+  if (!started || finished) {
     return;
   }
 
@@ -48,15 +54,21 @@ function surrender() {
   endingResult.textContent = 'lose';
   canvas.setInteractive(false);
   endingContainer.classList.add('visible');
+  finished = true;
+  started = false;
 }
 
 function win() {
   endingResult.textContent = 'win';
   endingContainer.classList.add('visible');
+  finished = true;
+  started = false;
 }
 
 function restart() {
   endingContainer.classList.remove('visible');
+  finished = false;
+  started = true;
   newGame();
 }
 
