@@ -1,13 +1,31 @@
 'use strict';
 
+/* globals caches, Promise */
+
 var version = 'v1';
 var cacheName = 'resources';
 
-// TODO: Add the favicon when it's made
 var resources = [
   '/js/main.js',
   '/css/main.css',
-  'index.html'
+  'index.html',
+  'favicon.ico',
+  '/meta/apple-touch-icon-57x57.png',
+  '/meta/apple-touch-icon-60x60.png',
+  '/meta/apple-touch-icon-72x72.png',
+  '/meta/apple-touch-icon-76x76.png',
+  '/meta/apple-touch-icon-114x114.png',
+  '/meta/apple-touch-icon-120x120.png',
+  '/meta/apple-touch-icon-144x144.png',
+  '/meta/apple-touch-icon-152x152.png',
+  '/meta/apple-touch-icon-180x180.png',
+  '/meta/favicon-32x32.png',
+  '/meta/android-chrome-192x192.png',
+  '/meta/favicon-96x96.png',
+  '/meta/favicon-16x16.png',
+  '/manifest.json',
+  '/meta/safari-pinned-tab.svg',
+  '/meta/mstile-144x144.png'
 ];
 
 self.addEventListener('install', function(event) {

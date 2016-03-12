@@ -6,7 +6,7 @@
   "scripts": {
     "jshint": "jshint src",
     "clean": "rimraf build && mkdirp build && mkdirp build/js && mkdirp build/css",
-    "copy": "cpy 'src/index.html' build && cpy 'src/css/main.css' build/css",
+    "copy": "cpy 'src/index.html' build && cpy 'src/css/main.css' build/css && cpy 'src/meta/*.*' build/meta && cpy 'src/favicon.ico' build && cpy 'src/manifest.json' build",
     "browserify": "browserify -d -o build/js/main.js src/js/main.js",
     "build": "npm run jshint && npm run clean && npm run copy && npm run browserify",
     "watch": "watch 'npm run build' src",
